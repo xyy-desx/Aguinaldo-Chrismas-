@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christmas Scratch Aguinaldo</title>
+<style>
+:root {
+  --bg-light: #fff8f0;
+  --bg-dark: #121212;
+  --text-light: #111;
+  --text-dark: #eee;
+  --card-bg-light: #f5f5f5;
+  --card-bg-dark: #333;
+  --scratch-overlay: #c62828; 
+  --scratch-text-light: #c0392b; 
+  --scratch-text-dark: #95a5a6; 
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: 0.3s;
+  overflow-x: hidden;
+}
+
+body.dark-mode { background: var(--bg-dark); color: var(--text-dark); }
+
+#phoneFrame {
+  border: 12px solid #555;
+  border-radius: 40px;
+  box-shadow: 0 0 0 2px #333, 0 20px 50px rgba(0, 0, 0, 0.5);
+  width: 375px;
+  height: 700px;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  transition: 0.3s;
+}
+
+body.dark-mode #phoneFrame {
+  border-color: #333;
+  box-shadow: 0 0 0 2px #111, 0 20px 50px rgba(0, 0, 0, 0.8);
+  background: var(--bg-dark);
+}
+
+#phoneFrame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 8px;
+  background: #333;
+  border-radius: 0 0 5px 5px;
+  z-index: 20;
+}
+
+#darkToggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid currentColor; 
+  cursor: pointer;
+  z-index: 100;
+  background: transparent;
+  color: inherit; 
+  transition: 0.3s;
+  font-size: 14px; 
+}
+
+.content {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+h1 { margin-top: 40px; font-size: 28px; color: #c62828; }
+body.dark-mode h1 { color: #f1c40f; }
+p { font-size: 16px; margin-bottom: 30px; padding: 0 10px; }
+
+#scratchCardContainer {
+  margin: 0 auto;
+  width: 90%; 
+  max-width: 300px; 
+  height: 150px;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+  background: var(--card-bg-light);
+  transition: background 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body.dark-mode #scratchCardContainer {
+  background: var(--card-bg-dark);
+}
+
+#scratchCard { 
+  width: 100%; 
+  height: 100%; 
+  position: absolute; 
+  top:0; 
+  left:0; 
+  touch-action: none;
+  cursor: pointer;
+}
+
+#scratchText {
+  position: absolute;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#tryAgainBtn {
+  padding: 12px 25px; 
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background-color: #2ecc71; 
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #27ae60;
+  transition: background-color 0.1s, box-shadow 0.1s;
+  display: none; 
+}
+
+#tryAgainBtn:hover {
+  background-color: #27ae60;
+}
+
+#tryAgainBtn:active {
+  background-color: #27ae60;
+  box-shadow: 0 1px 0 #27ae60;
+  transform: translateY(3px);
+}
+
+canvas.effects {
+  position: fixed;
+  pointer-events: none;
+  top:0; left:0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  body { justify-content: flex-start; padding-top: 40px; }
+  #phoneFrame { width: 95%; height: auto; min-height: 600px; border: none; border-radius: 0; box-shadow: none; }
+  #phoneFrame::before { display: none; }
+}
+
+@media (max-width: 500px) {
+  h1 { font-size: 24px; margin-top: 20px; }
+  p { font-size: 14px; margin-bottom: 20px; }
+  #scratchText { font-size: 16px; }
+  #darkToggle { top: 10px; left: 10px; padding: 6px 10px; }
+  #tryAgainBtn { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+}
+</style>
+</head>
+<body>
+
+<button id="darkToggle">🌙 Dark Mode</button>
+
+<div id="phoneFrame">
+  <div class="content">
+    <h1>🎄 Scratch Your Christmas Gift!</h1>
+    <p>Use your finger or mouse to scratch and reveal your Aguinaldo! 🎁</p>
+    
+    <div id="scratchCardContainer">
+      <canvas id="scratchCard"></canvas>
+      <div id="scratchText">SCRATCH ME 🎅</div>
+    </div>
+
+    <button id="tryAgainBtn">Try Again 🔄</button>
+  </div>
+</div>
+
+<canvas class="effects" id="effects"></canvas>
+
+<script>
+const amounts = [5, 10, 20, 25, 50];
+const messages = {
+  5: "Small gift! Better luck next year 🎄",
+  10: "A little something! Enjoy it 🎁",
+  20: "Nice! Your Christmas is brighter 🎅",
+  25: "Great! Merry Christmas 🎄",
+  50: "Wow! Jackpot! Happy Holidays! 🎉"
+};
+
+const darkToggle = document.getElementById('darkToggle');
+const body = document.body;
+const scratchCard = document.getElementById('scratchCard');
+const scratchCtx = scratchCard.getContext('2d', { willReadFrequently: true });
+const scratchTextDiv = document.getElementById('scratchText');
+const tryAgainBtn = document.getElementById('tryAgainBtn'); 
+const effectsCanvas = document.getElementById('effects');
+const effectsCtx = effectsCanvas.getContext('2d');
+
+let currentPrize = 0;
+let revealed = false;
+let isDrawing = false;
+let revealThreshold = 50; 
+let confettiParticles = [];
+let snowParticles = [];
+let lastPos = null;
+
+const resizeCanvas = () => {
+    effectsCanvas.width = window.innerWidth;
+    effectsCanvas.height = window.innerHeight;
+};
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function random(min,max){return Math.random()*(max-min)+min;}
+
+function getPointerPos(e){
+  const rect = scratchCard.getBoundingClientRect();
+  let x, y;
+  if(e.touches){ 
+    x = e.touches[0].clientX - rect.left; 
+    y = e.touches[0].clientY - rect.top; 
+  } else { 
+    x = e.clientX - rect.left; 
+    y = e.clientY - rect.top; 
+  }
+  const scaleX = scratchCard.width / rect.width;
+  const scaleY = scratchCard.height / rect.height;
+  return {x: x * scaleX, y: y * scaleY};
+}
+
+function drawScratchOverlay(){
+  scratchCtx.globalCompositeOperation = 'source-over'; 
+  scratchCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--scratch-overlay');
+  scratchCtx.fillRect(0,0,scratchCard.width,scratchCard.height);
+  scratchCtx.globalCompositeOperation = 'destination-out';
+}
+
+function initCard(){
+  const container = scratchCard.parentElement;
+  const rect = container.getBoundingClientRect();
+  scratchCard.width = rect.width * window.devicePixelRatio;
+  scratchCard.height = rect.height * window.devicePixelRatio;
+  scratchCard.style.width = rect.width + 'px';
+  scratchCard.style.height = rect.height + 'px';
+  
+  currentPrize = amounts[Math.floor(Math.random() * amounts.length)];
+  revealed = false;
+  isDrawing = false;
+  lastPos = null;
+  tryAgainBtn.style.display = 'none'; 
+  scratchCard.style.display = 'block';
+  scratchTextDiv.style.display = 'block';
+  
+  drawScratchOverlay();
+}
+
+const BRUSH_SIZE = 30; 
+const SAMPLE_RATE = 25; 
+
+function scratch(e){
+  if(!isDrawing || revealed) return;
+  e.preventDefault(); 
+  const {x, y} = getPointerPos(e);
+  
+  scratchCtx.lineWidth = BRUSH_SIZE * 2;
+  scratchCtx.lineCap = 'round';
+  scratchCtx.lineJoin = 'round';
+  
+  if(lastPos) {
+    scratchCtx.beginPath();
+    scratchCtx.moveTo(lastPos.x, lastPos.y);
+    scratchCtx.lineTo(x, y);
+    scratchCtx.stroke();
+  }
+  
+  scratchCtx.beginPath();
+  scratchCtx.arc(x, y, BRUSH_SIZE, 0, Math.PI*2);
+  scratchCtx.fill();
+  
+  lastPos = {x, y};
+  
+  if(Math.random() < 0.1) {
+    checkReveal();
+  }
+}
+
+function checkReveal(){
+  const pixels = scratchCtx.getImageData(0,0,scratchCard.width,scratchCard.height);
+  let clearedSamples = 0;
+  const totalSamples = Math.floor((pixels.data.length / 4) / SAMPLE_RATE);
+  
+  for(let i=3;i<pixels.data.length;i+=(4*SAMPLE_RATE)) {
+    if(pixels.data[i] === 0) clearedSamples++;
+  }
+  
+  const percentage = (clearedSamples / totalSamples) * 100;
+  if(percentage > revealThreshold) revealGift();
+}
+
+function revealGift() {
+  if (revealed) return;
+  revealed = true;
+  isDrawing = false;
+  
+  scratchCtx.globalCompositeOperation = 'source-over';
+  scratchCtx.clearRect(0, 0, scratchCard.width, scratchCard.height);
+  scratchTextDiv.style.display = 'none';
+
+  const prizeColor = body.classList.contains('dark-mode') ? '#f1c40f' : '#e74c3c';
+  scratchCtx.fillStyle = prizeColor;
+  scratchCtx.textAlign = 'center';
+  scratchCtx.textBaseline = 'middle';
+
+  const prizeText = `PHP ${currentPrize}.00`;
+  const messageText = messages[currentPrize];
+  
+  const fontSize = Math.min(24, scratchCard.height / 6);
+  scratchCtx.font = `bold ${fontSize}px Arial`;
+  
+  const y1 = scratchCard.height / 2 - fontSize / 2;
+  const y2 = scratchCard.height / 2 + fontSize;
+  
+  scratchCtx.fillText(prizeText, scratchCard.width / 2, y1);
+  
+  scratchCtx.font = `${fontSize * 0.6}px Arial`;
+  const maxWidth = scratchCard.width * 0.85;
+  const words = messageText.split(' ');
+  let lines = [];
+  let currentLine = words[0];
+
+  for (let i = 1; i < words.length; i++) {
+    let word = words[i];
+    if (scratchCtx.measureText(currentLine + ' ' + word).width < maxWidth) {
+      currentLine += ' ' + word;
+    } else {
+      lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  lines.push(currentLine);
+
+  const lineHeight = fontSize * 0.7;
+  const startY = y2;
+
+  lines.forEach((line, index) => {
+    scratchCtx.fillText(line, scratchCard.width / 2, startY + index * lineHeight);
+  });
+
+  tryAgainBtn.style.display = 'block';
+  createConfetti();
+}
+
+function tryAgain() {
+    confettiParticles = [];
+    effectsCtx.clearRect(0, 0, effectsCanvas.width, effectsCanvas.height);
+    initCard();
+}
+
+function handleStart(e){ 
+  e.preventDefault(); 
+  if(revealed) return; 
+  isDrawing = true; 
+  lastPos = null;
+  scratch(e);
+}
+
+function handleMove(e) {
+  if(isDrawing && !revealed) {
+    scratch(e);
+  }
+}
+
+function stopDrawing(){ 
+  isDrawing = false; 
+  lastPos = null;
+}
+
+scratchCard.addEventListener('mousedown', handleStart);
+scratchCard.addEventListener('mousemove', handleMove);
+scratchCard.addEventListener('mouseup', stopDrawing);
+scratchCard.addEventListener('mouseleave', stopDrawing);
+
+scratchCard.addEventListener('touchstart', handleStart, {passive:false});
+scratchCard.addEventListener('touchmove', handleMove, {passive:false});
+scratchCard.addEventListener('touchend', stopDrawing);
+scratchCard.addEventListener('touchcancel', stopDrawing); 
+
+darkToggle.addEventListener('click',()=>{
+  body.classList.toggle('dark-mode');
+  darkToggle.textContent = body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+});
+
+function createConfetti(){
+  confettiParticles = [];
+  for(let i=0;i<150;i++){
+    let color = ['#ffc107', '#e74c3c', '#2ecc71'][Math.floor(random(0,3))]; 
+    confettiParticles.push({
+      x:random(0,effectsCanvas.width),
+      y:random(-effectsCanvas.height, 0),
+      r:random(3,7),
+      d:random(1,3),
+      color:color,
+      tilt:random(-10,10), 
+      velocity: random(2, 5),
+      tiltAngle: 0,
+      tiltAngleIncrement: random(0.05, 0.12)
+    });
+  }
+}
+
+function createSnow(){
+  snowParticles = [];
+  for(let i=0;i<100;i++){
+    snowParticles.push({
+      x:random(0,effectsCanvas.width),
+      y:random(0,effectsCanvas.height),
+      r:random(1,3),
+      d:random(0.5, 2),
+      angle: random(0, Math.PI * 2)
+    });
+  }
+}
+
+function drawEffects(){
+  effectsCtx.clearRect(0,0,effectsCanvas.width,effectsCanvas.height);
+  
+  confettiParticles.forEach(p=>{
+    effectsCtx.save();
+    effectsCtx.translate(p.x, p.y);
+    p.tiltAngle += p.tiltAngleIncrement;
+    effectsCtx.rotate((p.tilt + p.tiltAngle) * (Math.PI / 180));
+    effectsCtx.fillStyle = p.color;
+    effectsCtx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.5);
+    effectsCtx.restore();
+    
+    p.y += p.velocity;
+    p.x += Math.sin(p.d);
+    p.d += 0.01;
+    
+    if(p.y > effectsCanvas.height) {
+      p.y = -p.r;
+      p.x = random(0, effectsCanvas.width);
+    }
+  });
+
+  effectsCtx.fillStyle='rgba(255,255,255,0.8)';
+  snowParticles.forEach(s=>{
+    effectsCtx.beginPath();
+    effectsCtx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    effectsCtx.fill();
+    
+    s.y += s.d;
+    s.angle += 0.01;
+    s.x += Math.sin(s.angle) * 0.5;
+    
+    if(s.y>effectsCanvas.height) {
+      s.y=0;
+      s.x = random(0, effectsCanvas.width);
+    }
+    if(s.x>effectsCanvas.width) s.x=0;
+    if(s.x<0) s.x=effectsCanvas.width;
+  });
+
+  requestAnimationFrame(drawEffects);
+}
+
+tryAgainBtn.addEventListener('click', tryAgain);
+initCard();
+createSnow(); 
+drawEffects();
+
+window.addEventListener('resize', () => {
+  if(!revealed) {
+    initCard();
+  }
+});
+</script>
+</body>
+</html>
