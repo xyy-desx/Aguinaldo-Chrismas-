@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Christmas Scratch Aguinaldo</title>
 <style>
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 :root {
   --bg-light: #fff8f0;
   --bg-dark: #121212;
@@ -13,12 +20,10 @@
   --card-bg-light: #f5f5f5;
   --card-bg-dark: #333;
   --scratch-overlay: #c62828; 
-  --scratch-text-light: #c0392b; 
-  --scratch-text-dark: #95a5a6; 
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -26,186 +31,225 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background: var(--bg-light);
   color: var(--text-light);
-  transition: 0.3s;
+  transition: background 0.3s, color 0.3s;
   overflow-x: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
-body.dark-mode { background: var(--bg-dark); color: var(--text-dark); }
-
-#phoneFrame {
-  border: 12px solid #555;
-  border-radius: 40px;
-  box-shadow: 0 0 0 2px #333, 0 20px 50px rgba(0, 0, 0, 0.5);
-  width: 375px;
-  height: 700px;
-  overflow: hidden;
-  position: relative;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0;
-  transition: 0.3s;
-}
-
-body.dark-mode #phoneFrame {
-  border-color: #333;
-  box-shadow: 0 0 0 2px #111, 0 20px 50px rgba(0, 0, 0, 0.8);
-  background: var(--bg-dark);
-}
-
-#phoneFrame::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 8px;
-  background: #333;
-  border-radius: 0 0 5px 5px;
-  z-index: 20;
+body.dark-mode { 
+  background: var(--bg-dark); 
+  color: var(--text-dark); 
 }
 
 #darkToggle {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid currentColor; 
+  top: 10px;
+  right: 10px;
+  padding: 10px 16px;
+  border-radius: 25px;
+  border: 2px solid currentColor;
   cursor: pointer;
   z-index: 100;
-  background: transparent;
-  color: inherit; 
+  background: rgba(255,255,255,0.9);
+  color: #333;
   transition: 0.3s;
-  font-size: 14px; 
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.content {
+body.dark-mode #darkToggle {
+  background: rgba(51,51,51,0.9);
+  color: #fff;
+}
+
+.container {
   width: 100%;
+  max-width: 500px;
   padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 10;
-  overflow-y: auto;
+  margin-top: 60px;
 }
 
-h1 { margin-top: 40px; font-size: 28px; color: #c62828; }
-body.dark-mode h1 { color: #f1c40f; }
-p { font-size: 16px; margin-bottom: 30px; padding: 0 10px; }
+h1 { 
+  margin: 20px 0 10px;
+  font-size: clamp(24px, 7vw, 32px);
+  color: #c62828;
+  font-weight: bold;
+}
+
+body.dark-mode h1 { 
+  color: #f1c40f; 
+}
+
+p { 
+  font-size: clamp(14px, 4vw, 18px);
+  margin: 10px 0 30px;
+  padding: 0 10px;
+  line-height: 1.5;
+}
 
 #scratchCardContainer {
   margin: 0 auto;
-  width: 90%; 
-  max-width: 300px; 
-  height: 150px;
+  width: 100%;
+  max-width: 350px;
+  aspect-ratio: 2 / 1;
   position: relative;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   overflow: hidden;
   background: var(--card-bg-light);
   transition: background 0.3s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  touch-action: none;
 }
 
 body.dark-mode #scratchCardContainer {
   background: var(--card-bg-dark);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
 
 #scratchCard { 
   width: 100%; 
   height: 100%; 
   position: absolute; 
-  top:0; 
-  left:0; 
+  top: 0; 
+  left: 0; 
   touch-action: none;
   cursor: pointer;
 }
 
 #scratchText {
   position: absolute;
-  font-size: 18px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(18px, 5vw, 24px);
   font-weight: bold;
   color: #fff;
-  text-shadow: 1px 1px 3px #000;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   pointer-events: none;
   z-index: 1;
+  white-space: nowrap;
 }
 
 #tryAgainBtn {
-  padding: 12px 25px; 
-  margin-top: 25px;
-  font-size: 18px;
+  padding: 16px 32px; 
+  margin-top: 30px;
+  font-size: clamp(16px, 4.5vw, 20px);
   font-weight: bold;
   color: white;
-  background-color: #2ecc71; 
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
   border: none;
-  border-radius: 8px;
+  border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 4px 0 #27ae60;
-  transition: background-color 0.1s, box-shadow 0.1s;
-  display: none; 
-}
-
-#tryAgainBtn:hover {
-  background-color: #27ae60;
+  box-shadow: 0 6px 0 #1e8449, 0 8px 20px rgba(46, 204, 113, 0.4);
+  transition: all 0.2s;
+  display: none;
+  min-width: 200px;
 }
 
 #tryAgainBtn:active {
-  background-color: #27ae60;
-  box-shadow: 0 1px 0 #27ae60;
-  transform: translateY(3px);
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #1e8449, 0 4px 10px rgba(46, 204, 113, 0.4);
 }
 
 canvas.effects {
   position: fixed;
   pointer-events: none;
-  top:0; left:0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: 0;
 }
 
-@media (max-width: 768px) {
-  body { justify-content: flex-start; padding-top: 40px; }
-  #phoneFrame { width: 95%; height: auto; min-height: 600px; border: none; border-radius: 0; box-shadow: none; }
-  #phoneFrame::before { display: none; }
+/* Smooth animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+.container > * {
+  animation: fadeIn 0.6s ease-out backwards;
+}
+
+.container > *:nth-child(1) { animation-delay: 0.1s; }
+.container > *:nth-child(2) { animation-delay: 0.2s; }
+.container > *:nth-child(3) { animation-delay: 0.3s; }
+
+/* Mobile specific */
 @media (max-width: 500px) {
-  h1 { font-size: 24px; margin-top: 20px; }
-  p { font-size: 14px; margin-bottom: 20px; }
-  #scratchText { font-size: 16px; }
-  #darkToggle { top: 10px; left: 10px; padding: 6px 10px; }
-  #tryAgainBtn { padding: 10px 20px; font-size: 16px; margin-top: 20px; }
+  .container {
+    padding: 15px;
+    margin-top: 50px;
+  }
+  
+  h1 { margin: 15px 0 8px; }
+  p { margin: 8px 0 25px; }
+  
+  #scratchCardContainer {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+  
+  #darkToggle {
+    top: 8px;
+    right: 8px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+}
+
+/* Landscape phone */
+@media (max-height: 600px) and (orientation: landscape) {
+  .container {
+    margin-top: 20px;
+    padding: 10px;
+  }
+  
+  h1 { 
+    font-size: 20px;
+    margin: 10px 0 5px;
+  }
+  
+  p { 
+    font-size: 14px;
+    margin: 5px 0 15px;
+  }
+  
+  #scratchCardContainer {
+    max-width: 280px;
+  }
+  
+  #tryAgainBtn {
+    margin-top: 15px;
+    padding: 12px 24px;
+  }
 }
 </style>
 </head>
 <body>
 
-<button id="darkToggle">🌙 Dark Mode</button>
+<button id="darkToggle">🌙 Dark</button>
 
-<div id="phoneFrame">
-  <div class="content">
-    <h1>🎄 Scratch Your Christmas Gift!</h1>
-    <p>Use your finger or mouse to scratch and reveal your Aguinaldo! 🎁</p>
-    
-    <div id="scratchCardContainer">
-      <canvas id="scratchCard"></canvas>
-      <div id="scratchText">SCRATCH ME 🎅</div>
-    </div>
-
-    <button id="tryAgainBtn">Try Again 🔄</button>
+<div class="container">
+  <h1>🎄 Scratch Your Christmas Gift!</h1>
+  <p>Use your finger to scratch and reveal your Aguinaldo! 🎁</p>
+  
+  <div id="scratchCardContainer">
+    <canvas id="scratchCard"></canvas>
+    <div id="scratchText">SCRATCH ME 🎅</div>
   </div>
+
+  <button id="tryAgainBtn">Try Again 🔄</button>
 </div>
 
 <canvas class="effects" id="effects"></canvas>
@@ -232,7 +276,7 @@ const effectsCtx = effectsCanvas.getContext('2d');
 let currentPrize = 0;
 let revealed = false;
 let isDrawing = false;
-let revealThreshold = 50; 
+let revealThreshold = 45;
 let confettiParticles = [];
 let snowParticles = [];
 let lastPos = null;
@@ -248,33 +292,50 @@ function random(min,max){return Math.random()*(max-min)+min;}
 
 function getPointerPos(e){
   const rect = scratchCard.getBoundingClientRect();
-  let x, y;
-  if(e.touches){ 
-    x = e.touches[0].clientX - rect.left; 
-    y = e.touches[0].clientY - rect.top; 
+  let clientX, clientY;
+  
+  if(e.touches && e.touches.length > 0){ 
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
   } else { 
-    x = e.clientX - rect.left; 
-    y = e.clientY - rect.top; 
+    clientX = e.clientX;
+    clientY = e.clientY;
   }
+  
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  
   const scaleX = scratchCard.width / rect.width;
   const scaleY = scratchCard.height / rect.height;
+  
   return {x: x * scaleX, y: y * scaleY};
 }
 
 function drawScratchOverlay(){
   scratchCtx.globalCompositeOperation = 'source-over'; 
-  scratchCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--scratch-overlay');
-  scratchCtx.fillRect(0,0,scratchCard.width,scratchCard.height);
+  
+  const gradient = scratchCtx.createLinearGradient(0, 0, scratchCard.width, scratchCard.height);
+  gradient.addColorStop(0, '#c62828');
+  gradient.addColorStop(0.5, '#d32f2f');
+  gradient.addColorStop(1, '#b71c1c');
+  
+  scratchCtx.fillStyle = gradient;
+  scratchCtx.fillRect(0, 0, scratchCard.width, scratchCard.height);
+  
   scratchCtx.globalCompositeOperation = 'destination-out';
 }
 
 function initCard(){
   const container = scratchCard.parentElement;
   const rect = container.getBoundingClientRect();
-  scratchCard.width = rect.width * window.devicePixelRatio;
-  scratchCard.height = rect.height * window.devicePixelRatio;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  
+  scratchCard.width = rect.width * dpr;
+  scratchCard.height = rect.height * dpr;
   scratchCard.style.width = rect.width + 'px';
   scratchCard.style.height = rect.height + 'px';
+  
+  scratchCtx.scale(dpr, dpr);
   
   currentPrize = amounts[Math.floor(Math.random() * amounts.length)];
   revealed = false;
@@ -287,13 +348,17 @@ function initCard(){
   drawScratchOverlay();
 }
 
-const BRUSH_SIZE = 30; 
-const SAMPLE_RATE = 25; 
+const BRUSH_SIZE = window.innerWidth < 500 ? 40 : 35;
+const SAMPLE_RATE = 30;
 
 function scratch(e){
   if(!isDrawing || revealed) return;
-  e.preventDefault(); 
+  e.preventDefault();
+  
   const {x, y} = getPointerPos(e);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const adjustedX = x / dpr;
+  const adjustedY = y / dpr;
   
   scratchCtx.lineWidth = BRUSH_SIZE * 2;
   scratchCtx.lineCap = 'round';
@@ -302,27 +367,27 @@ function scratch(e){
   if(lastPos) {
     scratchCtx.beginPath();
     scratchCtx.moveTo(lastPos.x, lastPos.y);
-    scratchCtx.lineTo(x, y);
+    scratchCtx.lineTo(adjustedX, adjustedY);
     scratchCtx.stroke();
   }
   
   scratchCtx.beginPath();
-  scratchCtx.arc(x, y, BRUSH_SIZE, 0, Math.PI*2);
+  scratchCtx.arc(adjustedX, adjustedY, BRUSH_SIZE, 0, Math.PI*2);
   scratchCtx.fill();
   
-  lastPos = {x, y};
+  lastPos = {x: adjustedX, y: adjustedY};
   
-  if(Math.random() < 0.1) {
+  if(Math.random() < 0.15) {
     checkReveal();
   }
 }
 
 function checkReveal(){
-  const pixels = scratchCtx.getImageData(0,0,scratchCard.width,scratchCard.height);
+  const pixels = scratchCtx.getImageData(0, 0, scratchCard.width, scratchCard.height);
   let clearedSamples = 0;
   const totalSamples = Math.floor((pixels.data.length / 4) / SAMPLE_RATE);
   
-  for(let i=3;i<pixels.data.length;i+=(4*SAMPLE_RATE)) {
+  for(let i = 3; i < pixels.data.length; i += (4 * SAMPLE_RATE)) {
     if(pixels.data[i] === 0) clearedSamples++;
   }
   
@@ -344,19 +409,22 @@ function revealGift() {
   scratchCtx.textAlign = 'center';
   scratchCtx.textBaseline = 'middle';
 
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const canvasDisplayWidth = scratchCard.width / dpr;
+  const canvasDisplayHeight = scratchCard.height / dpr;
+
   const prizeText = `PHP ${currentPrize}.00`;
   const messageText = messages[currentPrize];
   
-  const fontSize = Math.min(24, scratchCard.height / 6);
-  scratchCtx.font = `bold ${fontSize}px Arial`;
+  const baseFontSize = Math.min(canvasDisplayWidth / 8, canvasDisplayHeight / 4);
+  scratchCtx.font = `bold ${baseFontSize}px Arial`;
   
-  const y1 = scratchCard.height / 2 - fontSize / 2;
-  const y2 = scratchCard.height / 2 + fontSize;
+  const y1 = canvasDisplayHeight / 2 - baseFontSize / 2;
+  scratchCtx.fillText(prizeText, canvasDisplayWidth / 2, y1);
   
-  scratchCtx.fillText(prizeText, scratchCard.width / 2, y1);
-  
-  scratchCtx.font = `${fontSize * 0.6}px Arial`;
-  const maxWidth = scratchCard.width * 0.85;
+  const messageFontSize = baseFontSize * 0.45;
+  scratchCtx.font = `${messageFontSize}px Arial`;
+  const maxWidth = canvasDisplayWidth * 0.85;
   const words = messageText.split(' ');
   let lines = [];
   let currentLine = words[0];
@@ -372,15 +440,19 @@ function revealGift() {
   }
   lines.push(currentLine);
 
-  const lineHeight = fontSize * 0.7;
-  const startY = y2;
+  const lineHeight = messageFontSize * 1.3;
+  const startY = canvasDisplayHeight / 2 + baseFontSize / 2;
 
   lines.forEach((line, index) => {
-    scratchCtx.fillText(line, scratchCard.width / 2, startY + index * lineHeight);
+    scratchCtx.fillText(line, canvasDisplayWidth / 2, startY + index * lineHeight);
   });
 
   tryAgainBtn.style.display = 'block';
   createConfetti();
+  
+  if(navigator.vibrate) {
+    navigator.vibrate([100, 50, 100]);
+  }
 }
 
 function tryAgain() {
@@ -390,8 +462,8 @@ function tryAgain() {
 }
 
 function handleStart(e){ 
-  e.preventDefault(); 
-  if(revealed) return; 
+  if(revealed) return;
+  e.preventDefault();
   isDrawing = true; 
   lastPos = null;
   scratch(e);
@@ -413,100 +485,105 @@ scratchCard.addEventListener('mousemove', handleMove);
 scratchCard.addEventListener('mouseup', stopDrawing);
 scratchCard.addEventListener('mouseleave', stopDrawing);
 
-scratchCard.addEventListener('touchstart', handleStart, {passive:false});
-scratchCard.addEventListener('touchmove', handleMove, {passive:false});
+scratchCard.addEventListener('touchstart', handleStart, {passive: false});
+scratchCard.addEventListener('touchmove', handleMove, {passive: false});
 scratchCard.addEventListener('touchend', stopDrawing);
 scratchCard.addEventListener('touchcancel', stopDrawing); 
 
-darkToggle.addEventListener('click',()=>{
+darkToggle.addEventListener('click', () => {
   body.classList.toggle('dark-mode');
-  darkToggle.textContent = body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+  darkToggle.textContent = body.classList.contains('dark-mode') ? '☀️ Light' : '🌙 Dark';
 });
 
 function createConfetti(){
   confettiParticles = [];
-  for(let i=0;i<150;i++){
-    let color = ['#ffc107', '#e74c3c', '#2ecc71'][Math.floor(random(0,3))]; 
+  for(let i = 0; i < 120; i++){
+    let color = ['#ffc107', '#e74c3c', '#2ecc71', '#3498db', '#9b59b6'][Math.floor(random(0, 5))]; 
     confettiParticles.push({
-      x:random(0,effectsCanvas.width),
-      y:random(-effectsCanvas.height, 0),
-      r:random(3,7),
-      d:random(1,3),
-      color:color,
-      tilt:random(-10,10), 
-      velocity: random(2, 5),
+      x: random(0, effectsCanvas.width),
+      y: random(-effectsCanvas.height, -50),
+      r: random(4, 8),
+      d: random(1, 4),
+      color: color,
+      tilt: random(-15, 15), 
+      velocity: random(3, 7),
       tiltAngle: 0,
-      tiltAngleIncrement: random(0.05, 0.12)
+      tiltAngleIncrement: random(0.07, 0.15)
     });
   }
 }
 
 function createSnow(){
   snowParticles = [];
-  for(let i=0;i<100;i++){
+  for(let i = 0; i < 80; i++){
     snowParticles.push({
-      x:random(0,effectsCanvas.width),
-      y:random(0,effectsCanvas.height),
-      r:random(1,3),
-      d:random(0.5, 2),
+      x: random(0, effectsCanvas.width),
+      y: random(0, effectsCanvas.height),
+      r: random(1.5, 4),
+      d: random(0.5, 2),
       angle: random(0, Math.PI * 2)
     });
   }
 }
 
 function drawEffects(){
-  effectsCtx.clearRect(0,0,effectsCanvas.width,effectsCanvas.height);
+  effectsCtx.clearRect(0, 0, effectsCanvas.width, effectsCanvas.height);
   
-  confettiParticles.forEach(p=>{
+  confettiParticles.forEach(p => {
     effectsCtx.save();
     effectsCtx.translate(p.x, p.y);
     p.tiltAngle += p.tiltAngleIncrement;
     effectsCtx.rotate((p.tilt + p.tiltAngle) * (Math.PI / 180));
     effectsCtx.fillStyle = p.color;
-    effectsCtx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.5);
+    effectsCtx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 1.5);
     effectsCtx.restore();
     
     p.y += p.velocity;
-    p.x += Math.sin(p.d);
-    p.d += 0.01;
+    p.x += Math.sin(p.d) * 2;
+    p.d += 0.02;
     
-    if(p.y > effectsCanvas.height) {
+    if(p.y > effectsCanvas.height + 50) {
       p.y = -p.r;
       p.x = random(0, effectsCanvas.width);
     }
   });
 
-  effectsCtx.fillStyle='rgba(255,255,255,0.8)';
-  snowParticles.forEach(s=>{
+  effectsCtx.fillStyle = 'rgba(255,255,255,0.8)';
+  snowParticles.forEach(s => {
     effectsCtx.beginPath();
-    effectsCtx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    effectsCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
     effectsCtx.fill();
     
     s.y += s.d;
     s.angle += 0.01;
-    s.x += Math.sin(s.angle) * 0.5;
+    s.x += Math.sin(s.angle) * 0.6;
     
-    if(s.y>effectsCanvas.height) {
-      s.y=0;
+    if(s.y > effectsCanvas.height) {
+      s.y = 0;
       s.x = random(0, effectsCanvas.width);
     }
-    if(s.x>effectsCanvas.width) s.x=0;
-    if(s.x<0) s.x=effectsCanvas.width;
+    if(s.x > effectsCanvas.width) s.x = 0;
+    if(s.x < 0) s.x = effectsCanvas.width;
   });
 
   requestAnimationFrame(drawEffects);
 }
 
 tryAgainBtn.addEventListener('click', tryAgain);
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    if(!revealed) {
+      initCard();
+    }
+  }, 100);
+});
+
 initCard();
 createSnow(); 
 drawEffects();
-
-window.addEventListener('resize', () => {
-  if(!revealed) {
-    initCard();
-  }
-});
 </script>
 </body>
 </html>
