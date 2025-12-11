@@ -171,7 +171,6 @@ canvas.effects {
   z-index: 0;
 }
 
-/* Smooth animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -185,7 +184,6 @@ canvas.effects {
 .container > *:nth-child(2) { animation-delay: 0.2s; }
 .container > *:nth-child(3) { animation-delay: 0.3s; }
 
-/* Mobile specific */
 @media (max-width: 500px) {
   .container {
     padding: 15px;
@@ -208,7 +206,6 @@ canvas.effects {
   }
 }
 
-/* Landscape phone */
 @media (max-height: 600px) and (orientation: landscape) {
   .container {
     margin-top: 20px;
@@ -255,7 +252,14 @@ canvas.effects {
 <canvas class="effects" id="effects"></canvas>
 
 <script>
-const amounts = [10, 25,30,50, 100];
+const amounts = [
+  { value: 10, chance: 30 },
+  { value: 25, chance: 25 },
+  { value: 30, chance: 20 },
+  { value: 50, chance: 15 },
+  { value: 100, chance: 10 }
+];
+
 const messages = {
   10: "Small gift! Better luck next year 🎄",
   25: "A little something! Enjoy it 🎁",
@@ -263,6 +267,19 @@ const messages = {
   50: "Great! Merry Christmas 🎄",
   100: "Wow! Jackpot! Happy Holidays! 🎉"
 };
+
+function getWeightedRandomPrize() {
+  const totalChance = amounts.reduce((sum, item) => sum + item.chance, 0);
+  let random = Math.random() * totalChance;
+  
+  for (let i = 0; i < amounts.length; i++) {
+    random -= amounts[i].chance;
+    if (random <= 0) {
+      return amounts[i].value;
+    }
+  }
+  return amounts[0].value;
+}
 
 const darkToggle = document.getElementById('darkToggle');
 const body = document.body;
@@ -337,7 +354,7 @@ function initCard(){
   
   scratchCtx.scale(dpr, dpr);
   
-  currentPrize = amounts[Math.floor(Math.random() * amounts.length)];
+  currentPrize = getWeightedRandomPrize();
   revealed = false;
   isDrawing = false;
   lastPos = null;
