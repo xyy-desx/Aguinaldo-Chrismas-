@@ -14,14 +14,11 @@
     margin: 0;
     padding: 0;
   }
-
   .markdown-body {
     max-width: 860px;
     margin: 0 auto;
     padding: 40px 32px 80px;
   }
-
-  /* Headings */
   h1, h2, h3, h4 {
     font-weight: 600;
     line-height: 1.25;
@@ -32,20 +29,12 @@
   h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid #d0d7de; margin-top: 0; }
   h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid #d0d7de; }
   h3 { font-size: 1.25em; }
-
-  /* Paragraphs & text */
   p { margin-top: 0; margin-bottom: 16px; }
   strong { font-weight: 600; }
   em { font-style: italic; }
-
-  /* Links */
   a { color: #0969da; text-decoration: none; }
   a:hover { text-decoration: underline; }
-
-  /* Horizontal rule */
   hr { border: none; border-top: 1px solid #d0d7de; margin: 24px 0; }
-
-  /* Inline code */
   code {
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     font-size: 85%;
@@ -53,8 +42,6 @@
     border-radius: 6px;
     padding: 0.2em 0.4em;
   }
-
-  /* Code blocks */
   pre {
     background: #f6f8fa;
     border-radius: 6px;
@@ -71,16 +58,12 @@
     border-radius: 0;
     font-size: 100%;
   }
-
-  /* Blockquote */
   blockquote {
     margin: 0 0 16px;
     padding: 0 1em;
     color: #656d76;
     border-left: 4px solid #d0d7de;
   }
-
-  /* Lists */
   ul, ol {
     margin-top: 0;
     margin-bottom: 16px;
@@ -88,8 +71,6 @@
   }
   li { margin-bottom: 4px; }
   li > ul, li > ol { margin-top: 4px; margin-bottom: 0; }
-
-  /* Tables */
   table {
     border-collapse: collapse;
     width: 100%;
@@ -104,8 +85,6 @@
   }
   th { background: #f6f8fa; font-weight: 600; }
   tr:nth-child(even) { background: #f6f8fa; }
-
-  /* Badges / shields row */
   .badges { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
   .badge {
     display: inline-block;
@@ -119,8 +98,6 @@
   .badge-green { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
   .badge-blue  { background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
   .badge-gray  { background: #f6f8fa; color: #57606a; border: 1px solid #d0d7de; }
-
-  /* Note / tip boxes */
   .note {
     background: #ddf4ff;
     border-left: 4px solid #0969da;
@@ -131,7 +108,6 @@
     color: #0550ae;
   }
   .note strong { color: #0550ae; }
-
   @media (max-width: 600px) {
     .markdown-body { padding: 24px 16px 60px; }
     h1 { font-size: 1.6em; }
@@ -224,7 +200,7 @@ xdg-open index.html      # Linux</code></pre>
   <li><strong>Prize selection</strong> — on load (and on each "Try Again"), a weighted random function picks a prize from the <code>amounts</code> array.</li>
   <li><strong>Overlay drawn</strong> — a crimson gradient is painted onto the scratch canvas using <code>source-over</code> compositing. The canvas then switches to <code>destination-out</code> mode.</li>
   <li><strong>Scratching</strong> — each pointer/touch event draws filled arcs and lines. In <code>destination-out</code> mode, these punch transparent holes in the overlay.</li>
-  <li><strong>Reveal check</strong> — roughly every 15% of draw events, <code>getImageData</code> samples 1-in-30 pixels across the canvas. When more than 45% of sampled pixels are fully transparent (<code>alpha === 0</code>), the prize is auto-revealed.</li>
+  <li><strong>Reveal check</strong> — roughly every 15% of draw events, <code>getImageData</code> samples 1-in-30 pixels across the canvas. When enough pixels are fully transparent, the prize is auto-revealed.</li>
   <li><strong>Reveal</strong> — the canvas is cleared, prize text and message are drawn, the Try Again button appears, confetti fires, and the device vibrates (if supported).</li>
 </ol>
 
@@ -241,8 +217,6 @@ xdg-open index.html      # Linux</code></pre>
   { value: 50,  chance: 15 },
   { value: 100, chance: 10 },
 ];</code></pre>
-
-
 
 <table>
   <thead>
@@ -325,8 +299,8 @@ copies or substantial portions of the Software.</code></pre>
 
 <hr>
 
-<p align="center">Made by Desxzy/Zenyxy &nbsp;·&nbsp; 🎄 Christmas Scratch Aguinaldo</p>
+<p style="text-align:center;">Made by Desxzy/Zenyxy &nbsp;·&nbsp; 🎄 Christmas Scratch Aguinaldo</p>
 
 </div>
 </body>
-</html>****
+</html>
